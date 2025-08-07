@@ -18,13 +18,18 @@ const whitelist = [process.env.FRONTEND_URL];
 
 const corsOptions = {
   origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    // Permitir si está en la lista blanca
     if (whitelist.includes(origin)) {
-      callback(null, true);
+      return callback(null, true);
     } else {
-      callback(new Error("Error de Cors"));
+      return callback(new Error("Error de Cors"));
     }
-  },
+  }
 };
+
+app.use(cors(corsOptions));
 
 app.use(cors(corsOptions));
 

@@ -31,10 +31,14 @@ const registrar = async (req, res) => {
 };
 
 const autenticar = async (req, res) => {
+
+  
   const { email, password } = req.body;
   // Comprobar si el usuario existe
+console.log(email, password);
 
   const usuario = await Usuario.findOne({ email });
+  console.log(usuario);
   if (!usuario) {
     const error = new Error("El usuario no existe");
     return res.status(404).json({ msg: error.message });
@@ -137,6 +141,19 @@ const perfil = async (req, res) => {
   res.json(usuario);
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const usuarios = await Usuario.find()
+      .select("-password -token -__v -updatedAt"); 
+
+    res.json(usuarios);
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    res.status(500).json({ msg: "Error obteniendo usuarios" });
+  }
+};
+
+
 export {
   registrar,
   autenticar,
@@ -145,4 +162,5 @@ export {
   comprobarToken,
   nuevoPassword,
   perfil,
+  getAllUsers
 };
