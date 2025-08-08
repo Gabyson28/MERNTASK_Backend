@@ -14,7 +14,7 @@ dotenv.config();
 conectarDB();
 
 // CORS
-const whitelist = [process.env.FRONTEND_URL];
+const whitelist = [process.env.FRONTEND_URL, "http://localhost:3000"];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -49,7 +49,16 @@ import { Server } from "socket.io";
 const io = new Server(servidor, {
   pingTimeout: 60000,
   cors: {
-    origin: process.env.FRONTEND_URL,
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (whitelist.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Error de CORS en Socket.IO"));
+      }
+    },
+    methods: ["GET", "POST"],
+    credentials: true
   },
 });
 
