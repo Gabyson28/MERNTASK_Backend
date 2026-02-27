@@ -56,7 +56,7 @@ export const emailOlvidePassword = async (datos) => {
     </p>
     
 
-    <p>Si tu solicitaste este email, puedes ignorar el mensaje</p>
+    <p>Si tu no solicitaste este email, puedes ignorar el mensaje</p>
     
     `,
   });
